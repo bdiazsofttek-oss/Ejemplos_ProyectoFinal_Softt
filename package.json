@@ -5,6 +5,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "scripts": {
+    "start:project": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/start-project.ps1",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

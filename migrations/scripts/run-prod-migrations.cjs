@@ -229,16 +229,34 @@ async function applySurql(db, filePath, transform) {
 }
 
 /**
- * SurrealDB 3.x rejects an array-element wildcard field (e.g. `foo.*`) when its
- * parent is declared with the explicit `none | array<T> | null` union that the
- * schema dumps use. `option<array<T>|null>` is equivalent, accepted with `.*`
- * children, and still allows JSON null — rewrite the baseline before import.
+ * SurrealDB 3.x rejects wildcard child fields on optional array parents.
+ * The parent array type already validates each element, so normalize the
+ * optional type and omit those redundant child declarations in the baseline.
  */
-const normalizeOptionalArrayTypes = (sql) =>
-  sql.replace(
-    /\bnone\s*\|\s*(array<(?:[^<>]|<[^<>]*>)*>)\s*\|\s*null\b/gi,
-    'option<$1|null>'
+const normalizeOptionalArrayTypes = (sql) => {
+  const optionalArrayParents = new Set();
+  const optionalArrayPattern =
+    /\bDEFINE FIELD (\w+) ON (\w+) TYPE none\s*\|\s*(array<(?:[^<>]|<[^<>]*>)*>)\s*\|\s*null\b/gi;
+
+  for (const match of sql.matchAll(optionalArrayPattern)) {
+    optionalArrayParents.add(`${match[2]}.${match[1]}`);
+  }
+
+  const normalized = sql.replace(
+    optionalArrayPattern,
+    'DEFINE FIELD $1 ON $2 TYPE option<$3|null>'
   );
+
+  return normalized
+    .split('\n')
+    .filter((line) => {
+      const wildcard = line.match(/^\s*DEFINE FIELD (\w+)\.\* ON (\w+)\b/i);
+      // The parent array type already validates every element; SurrealDB rejects
+      // these redundant child declarations when that array is optional.
+      return !wildcard || !optionalArrayParents.has(`${wildcard[2]}.${wildcard[1]}`);
+    })
+    .join('\n');
+};
 
 /**
  * Demo dumps can be full exports (schema + `_schema_migration` tracking). The

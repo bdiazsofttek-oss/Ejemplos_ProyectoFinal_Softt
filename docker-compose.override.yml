@@ -1,8 +1,11 @@
-# Worktree-only: node_modules lives in the main checkout; mount it explicitly
-# so Vite is available inside the app container.
+# Keep frontend dependencies inside Docker so a fresh checkout does not need
+# Bun (or node_modules) installed on the host.
 services:
   app:
     volumes:
       - .:/app
-      - /var/www/html/posr-react/node_modules:/app/node_modules
-    command: sh -c "bunx vite --host 0.0.0.0 --port 5173"
+      - app-node_modules:/app/node_modules
+    command: sh -c "bun install --frozen-lockfile && bun run dev -- --host 0.0.0.0 --port 5173"
+
+volumes:
+  app-node_modules:

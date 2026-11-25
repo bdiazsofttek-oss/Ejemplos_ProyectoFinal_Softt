@@ -214,6 +214,23 @@ Write proposals use the same review-and-confirm pipeline as **AI Import** — Ka
 
 Full install and first-sale walkthrough: **[Documentation → Get started](https://ahmedali5530.xyz/posr/docs)**
 
+### Windows (one command)
+
+With Docker Desktop installed, execute:
+
+```powershell
+npm run start:project
+```
+
+The command starts Docker Desktop if needed and waits up to three minutes for
+its Linux engine. Complete Docker Desktop's initial setup if prompted.
+It then creates any missing local `.env` files with generated development
+credentials, installs frontend dependencies inside Docker, and starts the full
+stack at `http://localhost:5173`. It is safe to run again. To stop the stack,
+run `docker compose down`.
+
+### Manual / other platforms
+
 ```bash
 git clone https://github.com/ahmedali5530/restaurant-pos
 cd restaurant-pos
