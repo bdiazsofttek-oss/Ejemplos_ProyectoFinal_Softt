@@ -16,6 +16,11 @@
     }
   ],
   "paths": {
+    "/api/restaurants/{restaurantId}/vision/source": {
+      "parameters": [{"name":"restaurantId","in":"path","required":true,"schema":{"type":"string"}}],
+      "get": {"operationId":"getVisionSource","responses":{"200":{"description":"Fuente configurada"}}},
+      "put": {"operationId":"saveVisionSource","requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["kind"],"properties":{"kind":{"enum":["frames","file","camera"]},"label":{"type":"string"},"url":{"type":"string"}}}}}},"responses":{"200":{"description":"Fuente guardada"}}}
+    },
     "/health": {
       "get": {
         "operationId": "health",

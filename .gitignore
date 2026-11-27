@@ -22,3 +22,5 @@ logs/
 *.suo
 *.sw?
 .ipynb_checkpoints/
+test-results/
+playwright-report/

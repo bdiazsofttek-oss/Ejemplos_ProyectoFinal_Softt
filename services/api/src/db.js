@@ -68,7 +68,7 @@ export function validatePageContent({ projectData, html, css }) {
   if (typeof html !== 'string' || typeof css !== 'string' || !projectData || typeof projectData !== 'object') throw new Error('Contenido de página inválido');
   if (html.length > 500_000 || css.length > 250_000 || JSON.stringify(projectData).length > 1_000_000) throw new Error('La página supera el tamaño permitido');
   const unsafeHtml = /<\s*(script|iframe|object|embed|link|meta|base)\b|\son[a-z]+\s*=|javascript\s*:/i;
-  const unsafeCss = /@import\b|expression\s*\(|javascript\s*:|data\s*:\s*text\/html/i;
+  const unsafeCss = /@import\b|expression\s*\(|javascript\s*:|data\s*:\s*text\/html|<\s*\/?\s*(script|style|iframe)/i;
   if (unsafeHtml.test(html) || unsafeHtml.test(JSON.stringify(projectData)) || unsafeCss.test(css)) throw new Error('La página contiene código no permitido');
   return { projectData, html, css };
 }

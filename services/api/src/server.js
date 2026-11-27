@@ -119,7 +119,7 @@ export function createApplication({ db = openDatabase(), framesDir = simulationD
       if (!section && method === 'PATCH') { ops.requireRole(user, ops.roles.manage); result = ops.saveProfile(db, rid, input); }
       else if (section === 'tables') {
         if (method === 'GET') return send(200, ops.tables(db, rid));
-        if (parts[5]) { ops.requireRole(user, ops.roles.service); result = ops.tableAction(db, rid, id, parts[5]); }
+        if (parts[5] && method === 'POST') { ops.requireRole(user, ops.roles.service); result = ops.tableAction(db, rid, id, parts[5]); }
         else {
           ops.requireRole(user, ops.roles.manage);
           if (method === 'POST') { const tid = randomUUID(); db.prepare('INSERT INTO restaurant_tables (id, restaurant_id, label, seats, status) VALUES (?, ?, ?, ?, ?)').run(tid, rid, text(input.label, 'Nombre'), integer(input.seats, 'Capacidad', 1, 30), 'free'); result = ops.table(db, rid, tid); }
@@ -167,7 +167,13 @@ export function createApplication({ db = openDatabase(), framesDir = simulationD
         else if (method === 'POST') { ops.requireRole(user, ops.roles.manage); result = ingestEvent(db, rid, input); }
       } else if (section === 'vision') {
         ops.requireRole(user, ops.roles.manage);
-        if (id === 'observe' && method === 'POST') result = observeDemo(db, rid, input);
+        if (id === 'source' && method === 'GET') return send(200, db.prepare('SELECT kind, label, url FROM vision_sources WHERE restaurant_id = ?').get(rid) || { kind: 'frames', label: 'simulacion.1', url: '' });
+        if (id === 'source' && method === 'PUT') {
+          if (!['frames', 'file', 'camera'].includes(input.kind)) fail('Fuente de video inválida');
+          if (input.kind === 'camera') { let camera; try { camera = new URL(input.url); } catch { fail('URL de cámara inválida'); } if (!['http:', 'https:', 'rtsp:'].includes(camera.protocol)) fail('Protocolo de cámara inválido'); }
+          db.prepare('INSERT INTO vision_sources VALUES (?, ?, ?, ?) ON CONFLICT(restaurant_id) DO UPDATE SET kind = excluded.kind, label = excluded.label, url = excluded.url').run(rid, input.kind, String(input.label || 'Fuente').slice(0, 100), String(input.url || '').slice(0, 500)); result = { ok: true };
+        }
+        else if (id === 'observe' && method === 'POST') result = observeDemo(db, rid, input);
         else if (id === 'frames' && method === 'GET') {
           const files = (await readdir(framesDir)).filter(f => /^\d{5}\.jpg$/.test(f)).sort();
           if (!parts[5]) return send(200, files.map((name, index) => ({ index, name })));

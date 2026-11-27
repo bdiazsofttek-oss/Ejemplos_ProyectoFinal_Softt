@@ -2,8 +2,13 @@ import { readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const API = process.env.BETA_API || 'http://127.0.0.1:3150';
-const token = process.env.BETA_TOKEN || 'beta-demo-token';
-const framesDir = resolve('..', '..', 'simulacion.1', 'simulacion');
+let token = process.env.BETA_TOKEN;
+if (!token) {
+  const login = await fetch(API + '/api/auth/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: process.env.BETA_EMAIL || 'admin@demo.local', password: process.env.BETA_PASSWORD || 'demo1234' }) });
+  if (!login.ok) throw new Error('No se pudo iniciar sesión para el adaptador de visión');
+  token = (await login.json()).accessToken;
+}
+const framesDir = resolve(import.meta.dirname, '../../../simulacion.1/simulacion');
 const frames = (await readdir(framesDir)).filter(name => /^\d+\.jpg$/i.test(name)).sort();
 if (!frames.length) throw new Error(`No se encontraron fotogramas en ${framesDir}`);
 

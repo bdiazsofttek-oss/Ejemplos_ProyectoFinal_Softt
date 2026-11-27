@@ -1,18 +1,22 @@
 {
   "name": "restaurant-platform-beta",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "node": ">=24.0.0"
   },
   "scripts": {
-    "setup": "npm --prefix apps/gestion ci && npm --prefix apps/publica ci",
-    "start": "node scripts/start-beta.mjs",
+    "setup": "npm --prefix services/api ci && npm --prefix apps/gestion ci && npm --prefix apps/publica ci",
+    "start": "npm run build && node scripts/start-beta.mjs --preview",
     "dev": "node scripts/start-beta.mjs",
     "test": "npm --prefix services/api test",
+    "test:e2e": "npm run build && playwright test",
     "build": "npm --prefix apps/gestion run build && npm --prefix apps/publica run build",
     "vision:demo": "npm --prefix services/vision run demo"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
   }
 }

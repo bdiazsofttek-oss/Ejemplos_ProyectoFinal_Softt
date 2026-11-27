@@ -61,6 +61,10 @@ export function migratePlatform(db) {
       db.prepare('INSERT INTO schema_migrations VALUES (?, ?)').run(2, now());
     });
   }
+  if (!db.prepare('SELECT version FROM schema_migrations WHERE version = 3').get()) transaction(db, () => {
+    db.exec("CREATE TABLE vision_sources (restaurant_id TEXT PRIMARY KEY REFERENCES restaurants(id), kind TEXT NOT NULL DEFAULT 'frames', label TEXT NOT NULL DEFAULT 'simulacion.1', url TEXT NOT NULL DEFAULT '')");
+    db.prepare('INSERT INTO schema_migrations VALUES (?, ?)').run(3, now());
+  });
 }
 
 export function sessionUser(db, authorization) {

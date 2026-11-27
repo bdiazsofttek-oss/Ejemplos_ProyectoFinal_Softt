@@ -84,7 +84,7 @@ function slot(db, rid, input) {
   const profile = restaurant(db, rid); const date = String(input.date || ''); const time = String(input.time || '');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}$/.test(time)) fail('Fecha u hora inválida');
   const startsAt = new Date(date + 'T' + time + ':00-06:00');
-  if (!Number.isFinite(startsAt.getTime()) || startsAt.toISOString().slice(0, 10) !== date || startsAt.getTime() < Date.now() - 300000) fail('Elige una fecha y hora futuras');
+  if (!Number.isFinite(startsAt.getTime()) || new Date(date + 'T12:00:00Z').toISOString().slice(0, 10) !== date || startsAt.getTime() < Date.now() - 300000) fail('Elige una fecha y hora futuras');
   const minutes = Number(time.slice(0, 2)) * 60 + Number(time.slice(3));
   const minuteOf = t => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
   if (minutes < minuteOf(profile.openingTime) || minutes + 90 > minuteOf(profile.closingTime)) fail('La reserva de 90 minutos debe quedar dentro del horario');

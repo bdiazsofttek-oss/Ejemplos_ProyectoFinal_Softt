@@ -3,10 +3,11 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
+const viteCommand = process.argv.includes('--preview') ? ['node_modules/vite/bin/vite.js', 'preview'] : ['node_modules/vite/bin/vite.js'];
 const services = [
   { name: 'api', cwd: resolve(root, 'services', 'api'), args: ['src/server.js'] },
-  { name: 'gestion', cwd: resolve(root, 'apps', 'gestion'), args: ['node_modules/vite/bin/vite.js', '--port', '5174', '--host', '127.0.0.1', '--strictPort'] },
-  { name: 'publica', cwd: resolve(root, 'apps', 'publica'), args: ['node_modules/vite/bin/vite.js', '--port', '5175', '--host', '127.0.0.1', '--strictPort'] }
+  { name: 'gestion', cwd: resolve(root, 'apps', 'gestion'), args: [...viteCommand, '--port', '5174', '--host', '127.0.0.1', '--strictPort'] },
+  { name: 'publica', cwd: resolve(root, 'apps', 'publica'), args: [...viteCommand, '--port', '5175', '--host', '127.0.0.1', '--strictPort'] }
 ];
 
 for (const service of services) {

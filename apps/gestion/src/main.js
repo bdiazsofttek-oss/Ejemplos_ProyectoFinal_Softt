@@ -1,4 +1,5 @@
 import './styles.css';
+import { sourcePanel, initSource } from './vision-source.js';
 const API = import.meta.env.VITE_BETA_API || 'http://127.0.0.1:3150';
 const PUBLIC = 'http://127.0.0.1:5175';
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -150,9 +151,10 @@ async function render(tab) {
     const [ts,zones,frames] = await Promise.all([get('tables'),get('zones'),get('vision/frames')]); state.data.tables = ts; state.data.zones = zones; state.data.frames = frames;
     content = panel('Escena y calibración', `<p class="note">Modo demo guiado. Los fotogramas son reales; las observaciones se introducen con los botones. DINO/SAM todavía no ejecutan inferencia.</p><div class="form-grid">${select('Mesa de la escena','visionTable',ts.map(t => `<option value="${t.id}">${e(t.label)}</option>`).join(''))}${select('Fotograma','frame',frames.map(f => `<option value="${f.index}" ${f.index === state.frame ? 'selected' : ''}>${f.name}</option>`).join(''))}</div><div class="vision-scene"><img id="frame-image" alt="Fotograma de simulación"><svg id="zone-canvas" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg></div><p id="zone-hint">Selecciona una mesa y dibuja su zona sobre la imagen.</p><div class="actions">${button('Dibujar zona','draw-zone')}${button('Guardar zona','save-zone')}${button('Borrar puntos','clear-zone')}</div><div class="actions scenario">${button('1. Llegan comensales','observe','arrive')}${button('2. Espera sin atención','observe','wait')}${button('3. Mesero atiende','observe','attend')}${button('4. Llega un platillo','observe','dish')}</div><div id="observation"></div><h3>Zonas guardadas</h3>${zones.map(z => '<p>' + e(ts.find(t => t.id === z.tableId)?.label || z.tableId) + ' · ' + z.points.length + ' puntos ' + button('Eliminar zona','delete-zone',z.id) + '</p>').join('') || empty}`);
   } else if (tab === 'page') return pageView(renderId);
+  if (tab === 'vision') content = await sourcePanel(state, request, base()) + content;
   if (state.renderId !== renderId) return;
   view.innerHTML = content;
-  if (tab === 'vision') { state.drawing = false; state.points = []; await loadFrame(); drawZones(); }
+  if (tab === 'vision') { state.drawing = false; state.points = []; await loadFrame(); drawZones(); initSource(state, request, base(), toast); }
 }
 function profileFields(r = {}) {
   return field('Nombre','name',r.name || '','text','required') + field('Dirección pública (slug)','slug',r.slug || '','text','required pattern="[a-z0-9-]{3,60}"') + field('Ciudad','city',r.city || '','text','required') + field('Tipo de cocina','cuisine',r.cuisine || 'Mexicana','text','required') + field('Dirección','address',r.address || '') + field('Descripción','description',r.description || '') + field('Apertura','openingTime',r.openingTime || '09:00','time','required') + field('Cierre','closingTime',r.closingTime || '23:00','time','required') + field('Umbral sin atención (segundos)','thresholdSeconds',r.thresholdSeconds || 90,'number','min="15" max="3600" required');
@@ -198,6 +200,7 @@ function drawZones() {
   const canvas = document.querySelector('#zone-canvas'); if (!canvas) return;
   canvas.innerHTML = (state.data.zones || []).map(z => '<polygon points="' + z.points.map(p => p.map(n => n * 1000).join(',')).join(' ') + '" fill="#22c55e33" stroke="#22c55e" stroke-width="4"/>').join('') + (state.points.length ? '<polyline points="' + state.points.map(p => p.map(n => n * 1000).join(',')).join(' ') + '" fill="#f59e0b33" stroke="#f59e0b" stroke-width="5"/>' : '') + state.points.map(p => '<circle cx="' + p[0]*1000 + '" cy="' + p[1]*1000 + '" r="8" fill="#f59e0b"/>').join('');
   canvas.style.cursor = state.drawing ? 'crosshair' : 'default';
+  canvas.style.pointerEvents = state.drawing ? 'auto' : 'none';
 }
 
 app.addEventListener('click', async event => {

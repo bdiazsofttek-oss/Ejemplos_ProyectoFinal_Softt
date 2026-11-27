@@ -1,24 +1,73 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://restaurant-platform.local/contracts/events.schema.json",
-  "title": "VisionEvent",
+  "title": "VisionEventInput",
+  "description": "Evento de observaciones del adaptador de visión. El restaurante se obtiene de la ruta y la sesión, no del cuerpo.",
   "type": "object",
-  "required": ["event_type", "restaurant_id", "occurred_at", "source"],
+  "required": [
+    "eventType",
+    "source"
+  ],
   "properties": {
-    "event_type": {
-      "enum": ["table_unattended", "detection_summary"]
+    "eventType": {
+      "enum": [
+        "table_unattended",
+        "detection_summary"
+      ]
     },
-    "restaurant_id": { "type": "string", "minLength": 1 },
-    "table_id": { "type": ["string", "null"] },
-    "occurred_at": { "type": "string", "format": "date-time" },
-    "duration_seconds": { "type": "integer", "minimum": 0 },
-    "severity": { "enum": ["info", "warning", "critical"] },
-    "source": { "type": "string" },
-    "detections": {
+    "tableId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
       "type": "object",
-      "additionalProperties": { "type": "integer", "minimum": 0 }
-    },
-    "metadata": { "type": "object" }
+      "properties": {
+        "inference": {
+          "type": "boolean"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "frameIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "guests": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "waiterPresent": {
+          "type": "boolean"
+        },
+        "dishDelivered": {
+          "type": "boolean"
+        },
+        "secondsSinceService": {
+          "type": "number",
+          "minimum": 0
+        },
+        "classes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": true
+    }
   },
   "additionalProperties": false
 }

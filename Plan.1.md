@@ -33,6 +33,12 @@ Se retiraron del árbol activo el POS anterior, sus servicios auxiliares, migrac
 
 ## Estructura del repositorio
 
+### Entrega beta funcional 0.2
+
+Se añadieron las áreas y el flujo de prueba conectado: administración y roles por restaurante, mesas/menú/equipo, pedidos, cocina, entrega, cuenta/cobro de prueba, disponibilidad y reservas públicas/internas, llegada y cancelación, cuenta de cliente, editor con vista previa/historial/publicación, zonas y fuente de video, simulación guiada de visión, alertas WebSocket, reportes, bandeja demo de correo, plano offline y SEO público básico. Las reglas se ejecutan en la API SQL y las migraciones locales son aditivas.
+
+La inferencia DINO/SAM, el correo externo, la infraestructura objetivo FastAPI/PostgreSQL/Next.js y el despliegue siguen pendientes. La beta no los presenta como ejecutados. El recorrido, accesos y límites están en `BETA.md`.
+
 Un monorepo para que Codex, Antigravity y Neon trabajen sobre la misma base:
 
 ```
