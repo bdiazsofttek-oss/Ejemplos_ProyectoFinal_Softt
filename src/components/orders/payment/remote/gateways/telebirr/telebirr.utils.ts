@@ -1,2 +1,0 @@
-export const TELEBIRR_POLL_INTERVAL_MS = 3000;
-export const TELEBIRR_POLL_MAX_ATTEMPTS = 30;

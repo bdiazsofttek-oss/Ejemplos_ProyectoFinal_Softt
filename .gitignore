@@ -1,64 +1,24 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencias y resultados de compilación de las apps beta
+node_modules/
+dist/
+dist-ssr/
 
-node_modules
-dist
-dist-ssr
+# Datos SQL locales, secretos y logs
+services/api/data/
+.env
+.env.*
+!.env.example
 *.local
+*.log
+logs/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Copia recuperable del POS retirado; nunca se publica
+/.beta-archive/
+
+# Archivos del editor y copias de notebooks
+.vscode/
+.idea/
 .DS_Store
 *.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.sw?
-*.idea
-*.vscode
-posr.db*
-.cursor
-cert
-posr.db
-posr.db1
-
-database
-database/clog
-database/manifest
-database/sstables
-database/vlog
-database/wal
-database/LOCK
-
-.orchids
-
-# End-user guide generated artifacts (MD/HTML/PDF) and Playwright output
-docs/user-guide/dist
-docs/user-guide/images
-docs-automation/.output
-docs-automation/test-results
-docs-automation/playwright-report
-
-# Print service persisted logo (written at runtime)
-printing/data
-# API AI usage counters (written at runtime)
-api/data
-backups/surrealdb
-.qwen
-.commandcode
-.freebuff
-# Real env files carry secrets (SURREAL_USER/PASS, GATEWAY_JWT_SECRET, API keys).
-# Never commit them. Only the .env.example templates are tracked.
-.env
-.env.local
-api/.env
-gateway/.env
-payments/.env
+.ipynb_checkpoints/

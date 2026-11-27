@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://restaurant-platform.local/contracts/events.schema.json",
+  "title": "VisionEvent",
+  "type": "object",
+  "required": ["event_type", "restaurant_id", "occurred_at", "source"],
+  "properties": {
+    "event_type": {
+      "enum": ["table_unattended", "detection_summary"]
+    },
+    "restaurant_id": { "type": "string", "minLength": 1 },
+    "table_id": { "type": ["string", "null"] },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "duration_seconds": { "type": "integer", "minimum": 0 },
+    "severity": { "enum": ["info", "warning", "critical"] },
+    "source": { "type": "string" },
+    "detections": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

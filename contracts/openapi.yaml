@@ -1,0 +1,2892 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Restaurant Platform Beta",
+    "version": "0.2.0",
+    "description": "API SQL local de la beta funcional. Sesiones Bearer con roles y ámbito por restaurante. Correos y visión funcionan en modo demo explícito."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:3150"
+    }
+  ],
+  "security": [
+    {
+      "session": []
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "operationId": "registerCustomer",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "name"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "operationId": "currentSession",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "operationId": "logout",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants": {
+      "get": {
+        "operationId": "listRestaurants",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createRestaurant",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}": {
+      "get": {
+        "operationId": "getRestaurant",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateRestaurant",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Restaurant"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/tables": {
+      "get": {
+        "operationId": "list_tables",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_tables",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Table"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/tables/{id}": {
+      "delete": {
+        "operationId": "delete_tables",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_tables",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Table"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/products": {
+      "get": {
+        "operationId": "list_products",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_products",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/products/{id}": {
+      "delete": {
+        "operationId": "delete_products",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "update_products",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/users": {
+      "get": {
+        "operationId": "list_users",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_users",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/users/{id}": {
+      "delete": {
+        "operationId": "delete_users",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/zones": {
+      "get": {
+        "operationId": "list_zones",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_zones",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Zone"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/zones/{id}": {
+      "delete": {
+        "operationId": "delete_zones",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/tables/{id}/occupy": {
+      "post": {
+        "operationId": "table_occupy",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/tables/{id}/request-bill": {
+      "post": {
+        "operationId": "table_request-bill",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/tables/{id}/checkout": {
+      "post": {
+        "operationId": "table_checkout",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/orders": {
+      "get": {
+        "operationId": "list_orders",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_orders",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Order"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/orders/{id}": {
+      "patch": {
+        "operationId": "transition_orders",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Status"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/reservations": {
+      "get": {
+        "operationId": "list_reservations",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_reservations",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reservation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/reservations/{id}": {
+      "patch": {
+        "operationId": "transition_reservations",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Status"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/reports": {
+      "get": {
+        "operationId": "getReports",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/mail": {
+      "get": {
+        "operationId": "getDemoMail",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/vision-events": {
+      "get": {
+        "operationId": "listVisionEvents",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "post": {
+        "operationId": "ingestVisionEvent",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/vision-events/{id}/ack": {
+      "post": {
+        "operationId": "acknowledgeVisionEvent",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/vision/observe": {
+      "post": {
+        "operationId": "demoObservation",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Observation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/vision/frames": {
+      "get": {
+        "operationId": "listDemoFrames",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/vision/frames/{id}": {
+      "get": {
+        "operationId": "getDemoFrame",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/page": {
+      "get": {
+        "operationId": "getDraft",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      },
+      "put": {
+        "operationId": "saveDraft",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Page"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/page/publish": {
+      "post": {
+        "operationId": "publishPage",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/page/history": {
+      "get": {
+        "operationId": "pageHistory",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/restaurants/{restaurantId}/page/history/{id}/restore": {
+      "post": {
+        "operationId": "restorePage",
+        "parameters": [
+          {
+            "name": "restaurantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/public/restaurants": {
+      "get": {
+        "operationId": "searchRestaurants",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cuisine",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guests",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/public/restaurants/{slug}": {
+      "get": {
+        "operationId": "publicRestaurant",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/public/restaurants/{slug}/page": {
+      "get": {
+        "operationId": "publishedPage",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/public/restaurants/{slug}/availability": {
+      "get": {
+        "operationId": "availability",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "guests",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/public/restaurants/{slug}/reservations": {
+      "post": {
+        "operationId": "publicReservation",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reservation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/reservations/{id}": {
+      "get": {
+        "operationId": "reservationBySecret",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": []
+      }
+    },
+    "/public/reservations/{id}/cancel": {
+      "post": {
+        "operationId": "cancelBySecret",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        },
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customer/reservations": {
+      "get": {
+        "operationId": "customerReservations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    },
+    "/api/customer/reservations/{id}/cancel": {
+      "post": {
+        "operationId": "customerCancellation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado de la operación"
+          },
+          "400": {
+            "description": "Validación o transición inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión requerida"
+          },
+          "403": {
+            "description": "Sin permisos"
+          },
+          "404": {
+            "description": "Recurso inexistente"
+          },
+          "409": {
+            "description": "Conflicto de disponibilidad o estado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      },
+      "Restaurant": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug",
+          "city"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "city": {
+            "type": "string"
+          },
+          "cuisine": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "openingTime": {
+            "type": "string",
+            "example": "09:00"
+          },
+          "closingTime": {
+            "type": "string",
+            "example": "23:00"
+          },
+          "thresholdSeconds": {
+            "type": "integer",
+            "minimum": 15
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Table": {
+        "type": "object",
+        "required": [
+          "label",
+          "seats"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "seats": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "priceCents"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "priceCents": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "tableId",
+          "items"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "productId",
+                "quantity"
+              ],
+              "properties": {
+                "productId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99
+                }
+              }
+            }
+          }
+        }
+      },
+      "Reservation": {
+        "type": "object",
+        "required": [
+          "date",
+          "time",
+          "guests",
+          "name",
+          "email",
+          "consent"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "time": {
+            "type": "string",
+            "example": "14:00"
+          },
+          "guests": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          },
+          "tableId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "consent": {
+            "const": true
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password",
+          "role"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          },
+          "role": {
+            "enum": [
+              "gerente",
+              "mesero",
+              "cocina"
+            ]
+          }
+        }
+      },
+      "Page": {
+        "type": "object",
+        "required": [
+          "projectData",
+          "html",
+          "css"
+        ],
+        "properties": {
+          "projectData": {
+            "type": "object"
+          },
+          "html": {
+            "type": "string"
+          },
+          "css": {
+            "type": "string"
+          }
+        }
+      },
+      "Zone": {
+        "type": "object",
+        "required": [
+          "tableId",
+          "points"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string"
+          },
+          "points": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 20,
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        }
+      },
+      "Observation": {
+        "type": "object",
+        "required": [
+          "tableId",
+          "action"
+        ],
+        "properties": {
+          "tableId": {
+            "type": "string"
+          },
+          "action": {
+            "enum": [
+              "arrive",
+              "wait",
+              "attend",
+              "dish"
+            ]
+          },
+          "frameIndex": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 24
+          }
+        }
+      },
+      "Status": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

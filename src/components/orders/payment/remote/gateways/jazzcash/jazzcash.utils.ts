@@ -1,2 +1,0 @@
-export const JAZZCASH_POLL_INTERVAL_MS = 4000;
-export const JAZZCASH_POLL_MAX_ATTEMPTS = 45;

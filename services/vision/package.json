@@ -1,0 +1,6 @@
+{
+  "name": "restaurant-platform-vision-beta",
+  "private": true,
+  "type": "module",
+  "scripts": { "demo": "node src/demo-simulation.js" }
+}

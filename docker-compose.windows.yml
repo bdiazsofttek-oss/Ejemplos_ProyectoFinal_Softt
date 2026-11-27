@@ -1,6 +1,0 @@
-# Docker Desktop on Windows does not expose Linux USB devices by default.
-# The print service still runs (network/Bluetooth printing remains available),
-# but the Linux-only /dev/bus/usb mapping from the base compose file is reset.
-services:
-  printer:
-    devices: !reset []
